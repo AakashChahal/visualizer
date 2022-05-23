@@ -14,6 +14,8 @@ class DrawInfo:
         (250, 100, 50),
         (192, 192, 0)
     ]
+    FONT = pygame.font.SysFont('SFPro', 30)
+    LRG_FONT = pygame.font.SysFont('SFPro', 40)
     SIDE_PAD = 100
     TOP_PAD = 150
 
@@ -38,6 +40,15 @@ class DrawInfo:
 
 def draw(draw_info):
     draw_info.window.fill(draw_info.WHITE)
+    controls = draw_info.FONT.render(
+        "R - Reset | A - Ascending | D - Descending | SPACE - Start sorting", 1, draw_info.GREY)
+    draw_info.window.blit(
+        controls, (draw_info.width/2 - controls.get_width()/2, 5))
+
+    sorting = draw_info.FONT.render(
+        "I - Insertion | B - Bubble", 1, draw_info.GREEN)
+    draw_info.window.blit(
+        sorting, (draw_info.width/2 - sorting.get_width()/2, 35))
     draw_list(draw_info)
     pygame.display.update()
 
@@ -65,7 +76,9 @@ def generate_starting_list(n: int, min_val: int, max_val: int) -> list:
 
 
 def main():
-    draw_info = DrawInfo(800, 600, lst=generate_starting_list(50, 1, 100))
+    n, min_val, max_val = 50, 1, 100
+    draw_info = DrawInfo(
+        800, 600, lst=generate_starting_list(n, min_val, max_val))
     run = True
     clock = pygame.time.Clock()
     pygame.display.update()
@@ -76,6 +89,14 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+
+            if event.type != pygame.KEYDOWN:
+                continue
+
+            if event.key == pygame.K_r:
+                lst = generate_starting_list(n, min_val, max_val)
+                draw_info.set_list(lst)
+                pygame.display.update()
 
     pygame.quit()
 
