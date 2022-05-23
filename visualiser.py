@@ -1,3 +1,4 @@
+from pydoc import describe
 import pygame
 import random
 pygame.init()
@@ -14,7 +15,7 @@ class DrawInfo:
         (250, 100, 50),
         (192, 192, 0)
     ]
-    FONT = pygame.font.SysFont('SFPro', 30)
+    FONT = pygame.font.SysFont('comicsans', 20)
     LRG_FONT = pygame.font.SysFont('SFPro', 40)
     SIDE_PAD = 100
     TOP_PAD = 150
@@ -41,12 +42,12 @@ class DrawInfo:
 def draw(draw_info):
     draw_info.window.fill(draw_info.WHITE)
     controls = draw_info.FONT.render(
-        "R - Reset | A - Ascending | D - Descending | SPACE - Start sorting", 1, draw_info.GREY)
+        "R - Reset | A - Ascending | D - Descending | SPACE - Start sorting", 1, draw_info.BLACK)
     draw_info.window.blit(
         controls, (draw_info.width/2 - controls.get_width()/2, 5))
 
     sorting = draw_info.FONT.render(
-        "I - Insertion | B - Bubble", 1, draw_info.GREEN)
+        "I - Insertion | B - Bubble", 1, draw_info.BLACK)
     draw_info.window.blit(
         sorting, (draw_info.width/2 - sorting.get_width()/2, 35))
     draw_list(draw_info)
@@ -96,8 +97,16 @@ def main():
             if event.key == pygame.K_r:
                 lst = generate_starting_list(n, min_val, max_val)
                 draw_info.set_list(lst)
-                pygame.display.update()
+                sorting = False
 
+            elif event.key == pygame.K_SPACE and sorting == False:
+                sorting = True
+
+            elif event.key == pygame.K_a and not sorting:
+                ascending = True
+
+            elif event.key == pygame.K_d and not sorting:
+                ascending = False
     pygame.quit()
 
 
